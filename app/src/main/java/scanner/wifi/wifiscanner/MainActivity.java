@@ -89,23 +89,6 @@ public class MainActivity extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
         });
-//        ipScanner.setOnScanListener(new IpScanner.OnScanListener() {
-//            @Override
-//            public void scan(Map<String, String> resultMap) {
-//                Log.i("macAddress", resultMap.toString());
-//                for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-//                    String key = entry.getKey();
-//                    String value = entry.getValue();
-//                    ipData.Data cData = new ipData.Data();
-//                    cData.setMac(key);
-//                    cData.setIp(value);
-//                    String key2 = key.replaceAll(":", "-");
-//                    cData.setCompany(xData.get(key2.substring(0, 8).toUpperCase()));
-//                    data.add(cData);
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
         ipScanner.startScan();
     }
 
