@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.rv)
     RecyclerView rv;
-    BaseQuickAdapter<ipData.data, BaseViewHolder> adapter;
-    List<ipData.data> data = new ArrayList<>();
+    BaseQuickAdapter<ipData.Data, BaseViewHolder> adapter;
+    List<ipData.Data> data = new ArrayList<>();
 
     void initRv() {
-        adapter = new BaseQuickAdapter<ipData.data, BaseViewHolder>(R.layout.activity_main_item, data) {
+        adapter = new BaseQuickAdapter<ipData.Data, BaseViewHolder>(R.layout.activity_main_item, data) {
             @Override
-            protected void convert(BaseViewHolder helper, ipData.data item) {
+            protected void convert(BaseViewHolder helper, ipData.Data item) {
                 ((TextView) helper.getView(R.id.ip)).setText(item.getIp());
                 ((TextView) helper.getView(R.id.mac)).setText(item.getMac());
                 ((TextView) helper.getView(R.id.company)).setText(item.getCompany());
@@ -75,38 +75,52 @@ public class MainActivity extends AppCompatActivity {
 
     void getIpData() {
         IpScanner ipScanner = new IpScanner();
-        ipScanner.setOnScanListener(new IpScanner.OnScanListener() {
-            @Override
-            public void scan(Map<String, String> resultMap) {
-                Log.i("macAddress", resultMap.toString());
-                for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    ipData.data cData = new ipData.data();
-                    cData.setMac(key);
-                    cData.setIp(value);
-                    String key2 = key.replaceAll(":", "-");
-                    cData.setCompany(xData.get(key2.substring(0, 8).toUpperCase()));
-                    data.add(cData);
-                }
-                adapter.notifyDataSetChanged();
+        ipScanner.setOnScanListener(resultMap->{
+            Log.i("macAddress", resultMap.toString());
+            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                ipData.Data cData = new ipData.Data();
+                cData.setMac(key);
+                cData.setIp(value);
+                String key2 = key.replaceAll(":", "-");
+                cData.setCompany(xData.get(key2.substring(0, 8).toUpperCase()));
+                data.add(cData);
             }
+            adapter.notifyDataSetChanged();
         });
+//        ipScanner.setOnScanListener(new IpScanner.OnScanListener() {
+//            @Override
+//            public void scan(Map<String, String> resultMap) {
+//                Log.i("macAddress", resultMap.toString());
+//                for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+//                    String key = entry.getKey();
+//                    String value = entry.getValue();
+//                    ipData.Data cData = new ipData.Data();
+//                    cData.setMac(key);
+//                    cData.setIp(value);
+//                    String key2 = key.replaceAll(":", "-");
+//                    cData.setCompany(xData.get(key2.substring(0, 8).toUpperCase()));
+//                    data.add(cData);
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
         ipScanner.startScan();
     }
 
     public static class ipData {
-        public List<data> getDataList() {
+        public List<Data> getDataList() {
             return dataList;
         }
 
-        public void setDataList(List<data> dataList) {
+        public void setDataList(List<Data> dataList) {
             this.dataList = dataList;
         }
 
-        List<data> dataList;
+        List<Data> dataList;
 
-        public static class data {
+        public static class Data {
             public String getIp() {
                 return ip;
             }
@@ -143,10 +157,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open(fileName));
             BufferedReader bufReader = new BufferedReader(inputReader);
-            String line = "";
+            String line;
             String Result = "";
-            while ((line = bufReader.readLine()) != null)
+            while ((line = bufReader.readLine()) != null) {
                 Result += line;
+            }
             return Result;
         } catch (Exception e) {
             e.printStackTrace();
