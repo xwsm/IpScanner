@@ -17,6 +17,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,23 +47,29 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(this, "" + xData.size(), Toast.LENGTH_SHORT).show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, String> getIdNameMap(List<CompanyEntity.DataBean> accounts) {
-        return accounts.stream().collect(Collectors.toMap(CompanyEntity.DataBean::getMac, CompanyEntity.DataBean::getCompany,
-                (value1, value2) -> {
-                    return value1;
-                }));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return accounts.stream().collect(Collectors.toMap(CompanyEntity.DataBean::getMac, CompanyEntity.DataBean::getCompany,
+                    (value1, value2) -> {
+                        return value1;
+                    }));
+        }else{
+            Map<String, String> map=new HashMap<>(accounts.size());
+            for (CompanyEntity.DataBean dataBean:accounts) {
+                map.put(dataBean.getMac(),dataBean.getCompany());
+            }
+            return map;
+        }
     }
-
     @BindView(R.id.rv)
     RecyclerView rv;
-    BaseQuickAdapter<ipData.Data, BaseViewHolder> adapter;
-    List<ipData.Data> data = new ArrayList<>();
+    BaseQuickAdapter<IpData.Data, BaseViewHolder> adapter;
+    List<IpData.Data> data = new ArrayList<>();
 
     void initRv() {
-        adapter = new BaseQuickAdapter<ipData.Data, BaseViewHolder>(R.layout.activity_main_item, data) {
+        adapter = new BaseQuickAdapter<IpData.Data, BaseViewHolder>(R.layout.activity_main_item, data) {
             @Override
-            protected void convert(BaseViewHolder helper, ipData.Data item) {
+            protected void convert(BaseViewHolder helper, IpData.Data item) {
                 ((TextView) helper.getView(R.id.ip)).setText(item.getIp());
                 ((TextView) helper.getView(R.id.mac)).setText(item.getMac());
                 ((TextView) helper.getView(R.id.company)).setText(item.getCompany());
@@ -80,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
             for (Map.Entry<String, String> entry : resultMap.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                ipData.Data cData = new ipData.Data();
+                IpData.Data cData = new IpData.Data();
                 cData.setMac(key);
                 cData.setIp(value);
                 String key2 = key.replaceAll(":", "-");
-                cData.setCompany(xData.get(key2.substring(0, 8).toUpperCase()));
+                cData.setCompany((xData.get(key2.substring(0, 8).toUpperCase())!=null && !xData.get(key2.substring(0, 8).toUpperCase()).equals(""))?xData.get(key2.substring(0, 8).toUpperCase()):"未知");
                 data.add(cData);
             }
             adapter.notifyDataSetChanged();
@@ -92,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         ipScanner.startScan();
     }
 
-    public static class ipData {
+    public static class IpData {
         public List<Data> getDataList() {
             return dataList;
         }
