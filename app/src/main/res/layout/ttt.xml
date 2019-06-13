@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.eollse.zxt.flipview.flipview.FlipViewController
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ff"
+    app:orientation="horizontal"
+    ></com.eollse.zxt.flipview.flipview.FlipViewController>
+</android.support.constraint.ConstraintLayout>

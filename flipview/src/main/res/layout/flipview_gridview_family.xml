@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="afterDescendants"
+    android:id="@+id/lin_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_family"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/px_30"
+    android:paddingRight="@dimen/px_30"
+    android:scaleType="fitXY"
+    android:paddingTop="@dimen/px_30"
+    android:paddingBottom="@dimen/px_30">
+
+    <ImageView
+        android:background="@drawable/yuanjiao"
+        android:scaleType="fitXY"
+        android:id="@+id/grid_view_right"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/px_80"
+        android:layout_weight="1"
+        android:numColumns="1"
+        android:listSelector="#00000000"
+        android:verticalSpacing="@dimen/px_30"/>
+
+
+        <TextView
+            android:visibility="gone"
+            android:lineSpacingExtra="@dimen/px_15"
+            android:id="@+id/grid_view_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/px_30"
+            android:layout_weight="1"
+            android:numColumns="1"
+            tools:text=""
+            android:textSize="@dimen/px_30"
+            android:paddingLeft="@dimen/px_70"
+            android:paddingRight="@dimen/px_20"
+            android:verticalSpacing="@dimen/px_30"/>
+    <LinearLayout
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <com.eollse.zxt.flipview.view.LLWithWebView
+            android:id="@+id/web_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
